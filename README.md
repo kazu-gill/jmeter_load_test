@@ -2,19 +2,19 @@
 
 ## 概要 / Overview
 
-このリポジトリでは、JMeterを使用した分散負荷テストの設定方法について説明します。
+このリポジトリでは、JMeterを使用した分散負荷テストの設定方法について説明します。  
 物理サーバーとDockerの両方の環境での設定方法を記載しています。
 
-This repository explains how to set up distributed load testing using JMeter.
-It covers setup methods for both physical servers and Docker environments.
+This repository explains how to set up distributed load testing using JMeter.  
+It covers setup methods for both physical servers and Docker environments.  
 
 ### システム構成 / System Configuration
 
-JMeterの分散負荷テストでは、1台のマスターノードと複数のスレーブノードを使用して
+JMeterの分散負荷テストでは、1台のマスターノードと複数のスレーブノードを使用して  
 大規模な負荷テストを実行することができます。
 
-In JMeter distributed load testing, you can perform large-scale load tests using
-one master node and multiple slave nodes.
+In JMeter distributed load testing, you can perform large-scale load tests using  
+one master node and multiple slave nodes.  
 
 ```
 [JMeter Controller(Master)] --- [JMeter Agent(Slave1)]
@@ -26,14 +26,14 @@ one master node and multiple slave nodes.
 
 ### 物理サーバー環境の場合 / For Physical Server Environment
 
-分散テストを実行する際に必要なTCPポート：
-TCP ports required for distributed testing:
+分散テストを実行する際に必要なTCPポート：  
+TCP ports required for distributed testing:  
 
 - 1099: RMIレジストリ用のデフォルトポート / Default port for RMI registry
 - 追加のRMIポート（動的に割り当て） / Additional RMI ports (dynamically assigned)
 
-ファイアウォールがある環境では、以下の設定を`jmeter.properties`に追加して固定ポートを使用します：
-In environments with firewalls, add the following settings to `jmeter.properties` to use fixed ports:
+ファイアウォールがある環境では、以下の設定を`jmeter.properties`に追加して固定ポートを使用します：  
+In environments with firewalls, add the following settings to `jmeter.properties` to use fixed ports:  
 
 ```properties
 server.rmi.localport=50000
@@ -42,7 +42,7 @@ client.rmi.localport=50001
 
 ### Docker環境の場合 / For Docker Environment
 
-Docker Composeを使用する場合、以下のような設定で自動的にコンテナ間通信が確立されます：
+Docker Composeを使用する場合、以下のような設定で自動的にコンテナ間通信が確立されます：  
 When using Docker Compose, container-to-container communication is automatically established with the following configuration:
 
 ```yaml
@@ -62,7 +62,7 @@ networks:
   jmeter-net:
 ```
 
-Docker環境では以下の理由により、明示的なポート設定が不要です：
+Docker環境では以下の理由により、明示的なポート設定が不要です：  
 In Docker environments, explicit port settings are not required due to:
 
 1. Docker Compose による自動的なコンテナ間通信の設定 / Automatic container communication configuration by Docker Compose
