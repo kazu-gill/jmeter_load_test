@@ -1,0 +1,48 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  # JMeter Controller (Master)
+  jmeter-master:
+    build:
+      context: .
+      dockerfile: Dockerfile.jmeter
+    volumes:
+      - ./test-plans:/test-plans
+      - ./results:/results
+    environment:
+      - MODE=master
+    ports:
+      - "8000:60000"
+    networks:
+      - jmeter-net
+    command: >
+      -Jserver.rmi.ssl.disable=true
+      -Dclient.rmi.localport=60000
+
+  # JMeter Slave (Worker)
+  jmeter-slave:
+    build:
+      context: .
+      dockerfile: Dockerfile.jmeter
+    environment:
+      - MODE=slave
+    networks:
+      - jmeter-net
+    command: >
+      -Jserver.rmi.ssl.disable=true
+      -Dserver.rmi.localport=50000
+      -Jclient.tries=3
+
+  target-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.testserver
+    ports:
+      - "3000:3000"
+    networks:
+      - jmeter-net
+
+networks:
+  jmeter-net:
+    driver: bridge
